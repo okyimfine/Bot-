@@ -1701,16 +1701,8 @@ def stop_bot_endpoint():
 
 def start_web_dashboard():
     try:
-        print("🌐 Starting enhanced web dashboard on port 5000...")
-        app.run(host='0.0.0.0', port=5000, debug=False, threaded=True, use_reloader=False)
+        port = int(os.environ.get("PORT", 5000))
+        print(f"🌐 Starting enhanced web dashboard on port {port}...")
+        app.run(host='0.0.0.0', port=port, debug=False, threaded=True, use_reloader=False)
     except Exception as e:
         print(f"❌ Web dashboard error: {e}")
-        time.sleep(5)
-        try:
-            print("🌐 Retrying enhanced web dashboard on port 5001...")
-            app.run(host='0.0.0.0', port=5001, debug=False, threaded=True, use_reloader=False)
-        except Exception as e2:
-            print(f"❌ Web dashboard backup port error: {e2}")
-
-if __name__ == '__main__':
-    start_web_dashboard()
