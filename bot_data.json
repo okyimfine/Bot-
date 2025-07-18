@@ -1,0 +1,180 @@
+{
+  "active_giveaways": {},
+  "participants": {},
+  "completed_giveaways": [
+    {
+      "title": "100T",
+      "gift": "200",
+      "duration": 1,
+      "place": "-",
+      "info": "-",
+      "participants": [
+        {
+          "user_id": 7518612958,
+          "user_name": "€Hack Hub√",
+          "joined_at": "2025-07-05T09:01:35.427789"
+        }
+      ],
+      "completed_at": "2025-07-05T09:02:35.197172",
+      "message_id": 152
+    },
+    {
+      "title": "1000T",
+      "gift": "1000",
+      "duration": 1,
+      "place": "-",
+      "info": "-",
+      "participants": [
+        {
+          "user_id": 7518612958,
+          "user_name": "€Hack Hub√",
+          "joined_at": "2025-07-05 11:24:20"
+        }
+      ],
+      "completed_at": "2025-07-05T11:25:17.305481",
+      "message_id": 253
+    },
+    {
+      "title": "100T",
+      "gift": "Love💔",
+      "duration": 1,
+      "place": "-",
+      "info": "-",
+      "participants": [
+        {
+          "user_id": 7518612958,
+          "user_name": "€Hack Hub√",
+          "joined_at": "2025-07-06 15:32:17"
+        }
+      ],
+      "completed_at": "2025-07-06T15:33:15.860827",
+      "message_id": 349
+    },
+    {
+      "title": "HackHub Giveaway",
+      "gift": "Premium Account",
+      "duration": 276,
+      "place": "Online",
+      "info": "Special giveaway for community members",
+      "end_time": null,
+      "chat_id": -1001234567890,
+      "participants": [
+        {
+          "user_id": 7518612958,
+          "user_name": "€Hack Hub√",
+          "joined_at": "2025-01-05T14:30:00.000000"
+        },
+        {
+          "user_id": 6990940037,
+          "user_name": "Sirul aliff",
+          "joined_at": "2025-01-05T14:35:00.000000"
+        }
+      ],
+      "completed_at": "2025-07-07T13:01:29.662269",
+      "message_id": 169
+    },
+    {
+      "title": "Release Giveaway Bot",
+      "gift": "Free Trial 14-Days",
+      "duration": 0,
+      "place": "United States",
+      "info": "Elite Services",
+      "participants": [],
+      "completed_at": "2025-07-07T13:01:47.556876",
+      "message_id": 170
+    },
+    {
+      "title": "Netflix Accounts 100%",
+      "gift": "1 Year key",
+      "duration": 1,
+      "place": "-",
+      "info": "-",
+      "end_time": 1751893579.825572,
+      "chat_id": 7518612958,
+      "message_id": 388,
+      "participants": [
+        {
+          "user_id": 7518612958,
+          "user_name": "€Hack Hub√",
+          "joined_at": "2025-07-07 13:05:28"
+        }
+      ],
+      "completed_at": "2025-07-07T13:08:56.905339"
+    },
+    {
+      "title": "Release Update Grow A Garden",
+      "gift": "Event Cave",
+      "duration": 1,
+      "place": "-",
+      "info": "-",
+      "end_time": 1751893937.0315773,
+      "chat_id": 7518612958,
+      "message_id": 405,
+      "participants": [
+        {
+          "user_id": 7518612958,
+          "user_name": "€Hack Hub√",
+          "joined_at": "2025-07-07 13:11:20"
+        }
+      ],
+      "completed_at": "2025-07-07T13:12:17.965844"
+    },
+    {
+      "title": "100G",
+      "gift": "G",
+      "duration": 5,
+      "place": "-",
+      "info": "-",
+      "end_time": 1752811277.2026958,
+      "chat_id": 7518612958,
+      "message_id": 420,
+      "participants": [],
+      "completed_at": "2025-07-18T04:01:17.941540"
+    }
+  ],
+  "user_stats": {
+    "7518612958": {
+      "name": "€Hack Hub√",
+      "total_participations": 6,
+      "total_wins": 5,
+      "last_activity": "2025-07-07 13:12:17"
+    },
+    "6990940037": {
+      "name": "Sirul aliff",
+      "total_participations": 1,
+      "total_wins": 0
+    }
+  },
+  "last_updated": "2025-07-18T04:01:17.941552",
+  "winners_history": [
+    {
+      "user_id": 7518612958,
+      "giveaway_title": "1000T",
+      "won_at": "2025-07-05 11:25:16"
+    },
+    {
+      "user_id": 7518612958,
+      "giveaway_title": "100T",
+      "won_at": "2025-07-06 15:33:15"
+    },
+    {
+      "user_id": 7518612958,
+      "giveaway_title": "Netflix Accounts 100%",
+      "won_at": "2025-07-07 13:08:56"
+    },
+    {
+      "user_id": 7518612958,
+      "giveaway_title": "Release Update Grow A Garden",
+      "won_at": "2025-07-07 13:12:17"
+    }
+  ],
+  "user_keys": {
+    "7518612958": {
+      "key": "GJjdgNZ4DztVUGfD",
+      "user_name": "€Hack Hub√",
+      "generated_at": "2025-07-18T03:55:35.341751",
+      "expires_at": "2025-07-19T03:55:35.341729",
+      "is_active": true
+    }
+  }
+}
