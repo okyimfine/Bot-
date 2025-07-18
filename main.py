@@ -1,7 +1,7 @@
 from telebot import TeleBot, apihelper
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 from threading import Timer, Thread
-from keep_alive import keep_alive
+from web_dashboard import start_web_dashboard
 from web_dashboard import start_web_dashboard
 from database import db
 import time
