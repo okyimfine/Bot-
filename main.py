@@ -2,7 +2,6 @@ from telebot import TeleBot, apihelper
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 from threading import Timer, Thread
 from web_dashboard import start_web_dashboard
-from web_dashboard import start_web_dashboard
 from database import db
 import time
 import random
@@ -774,23 +773,18 @@ def modify_message(bot_instance, message):
     print(f"📨 Received message from {message.from_user.first_name}: {message.text[:50] if message.text else 'Non-text message'}")
 
 print("🤖 Bot starting...")
-keep_alive()
 
-# Start web dashboard in a separate thread
+# Start web dashboard with integrated keep alive functionality
 web_thread = Thread(target=start_web_dashboard)
 web_thread.daemon = True
 web_thread.start()
-print("🌐 Web dashboard thread started")
+print("🌐 Web dashboard started with integrated keep alive service")
 
-# Add delay to prevent port conflicts
+# Add delay to ensure services are ready
 time.sleep(2)
 
-# Start key system web interface in a separate thread
-from keysystem import start_key_system
-key_system_thread = Thread(target=start_key_system)
-key_system_thread.daemon = True
-key_system_thread.start()
-print("🔑 Key system thread started")
+# Key system functionality integrated into web dashboard
+print("🔑 Key system integrated into web dashboard")
 
 # Cleanup expired keys on startup
 db.cleanup_expired_keys()

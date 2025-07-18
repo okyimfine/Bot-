@@ -239,6 +239,36 @@ def get_player_status():
     players.sort(key=lambda x: x['last_activity'], reverse=True)
     return players
 
+KEY_SYSTEM_TEMPLATE = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HackHub Key System</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; color: #2d3748; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+        .card { background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); margin-bottom: 2rem; }
+        .btn { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 0.875rem 2rem; border-radius: 8px; cursor: pointer; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group input, .form-group select { width: 100%; padding: 0.875rem; border: 2px solid #e2e8f0; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h2>🔑 Key Management</h2>
+            <p>Keys managed through main dashboard at port 5000</p>
+            <a href="/" class="btn">Go to Main Dashboard</a>
+        </div>
+    </div>
+</body>
+</html>
+"""
+
 LOGIN_TEMPLATE = """
 <!DOCTYPE html>
 <html lang="en">
@@ -1064,6 +1094,7 @@ DASHBOARD_TEMPLATE = """
         <button class="nav-tab" onclick="showTab('analytics')">📈 Analytics</button>
         <button class="nav-tab" onclick="showTab('bot-control')">🎮 Bot Control</button>
         <button class="nav-tab" onclick="showTab('players')">👥 Players</button>
+        <button class="nav-tab" onclick="showTab('keys')">🔑 Keys</button>
         <button class="nav-tab" onclick="showTab('system')">⚙️ System</button>
     </div>
 
@@ -1252,6 +1283,41 @@ DASHBOARD_TEMPLATE = """
                             </div>
                         </div>
                         {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Keys Tab -->
+            <div id="keys" class="tab-content">
+                <div class="section">
+                    <h2>🔑 Key Management</h2>
+                    <div style="background: var(--bg-tertiary); padding: 2rem; border-radius: 12px; margin-bottom: 2rem; text-align: center;">
+                        <h3 style="margin-bottom: 1rem;">Key System Integrated</h3>
+                        <p style="color: var(--text-muted); margin-bottom: 1rem;">Key system functionality has been integrated into this dashboard for easier management.</p>
+                        <a href="/keysystem/" target="_blank" class="btn" style="background: var(--accent-primary); color: white; text-decoration: none; display: inline-block;">
+                            🔑 Manage Keys
+                        </a>
+                    </div>
+
+                    <div style="background: var(--glass-bg); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border-color);">
+                        <h4 style="margin-bottom: 1rem;">Quick Stats</h4>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
+                            {% set user_keys = user_keys_data %}
+                            {% set total_keys = user_keys|length %}
+                            {% set active_keys = user_keys.values()|selectattr('is_active')|list|length %}
+                            <div style="text-align: center;">
+                                <div style="font-size: 2rem; font-weight: 700; color: #667eea;">{{ total_keys }}</div>
+                                <div style="font-size: 0.875rem; color: var(--text-muted);">Total Keys</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 2rem; font-weight: 700; color: var(--accent-success);">{{ active_keys }}</div>
+                                <div style="font-size: 0.875rem; color: var(--text-muted);">Active Keys</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 2rem; font-weight: 700; color: var(--accent-danger);">{{ total_keys - active_keys }}</div>
+                                <div style="font-size: 0.875rem; color: var(--text-muted);">Expired Keys</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1536,6 +1602,25 @@ DASHBOARD_TEMPLATE = """
             });
         }
 
+        function showAlert(message, type = 'info') {
+            const alertContainer = document.getElementById('alert-container');
+            if (!alertContainer) return;
+
+            const alertClass = type === 'success' ? 'alert-success' : 'alert-error';
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert ${alertClass}`;
+            alertDiv.textContent = message;
+
+            alertContainer.innerHTML = '';
+            alertContainer.appendChild(alertDiv);
+
+            setTimeout(() => {
+                if (alertDiv.parentNode) {
+                    alertDiv.parentNode.removeChild(alertDiv);
+                }
+            }, 5000);
+        }
+
         function refreshData() {
             showNotification('🔄 Refreshing data...');
             location.reload();
@@ -1583,6 +1668,18 @@ DASHBOARD_TEMPLATE = """
 </html>
 """
 
+@app.route('/keep-alive')
+def keep_alive_endpoint():
+    return "🌐 Web Dashboard Keep Alive - Bot is running!"
+
+@app.route('/keep_alive')
+def keep_alive_alt_endpoint():
+    return "💓 Bot is alive!"
+
+@app.route('/health')
+def health_check():
+    return "✅ Web Dashboard & Keep Alive Service - All systems operational!"
+
 @app.route('/')
 def dashboard():
     if 'logged_in' not in session:
@@ -1606,7 +1703,8 @@ def dashboard():
             completed_giveaways=data.get('completed_giveaways', []),
             bot_status=bot_status,
             player_status=player_status,
-            analytics=analytics
+            analytics=analytics,
+            user_keys_data=data.get('user_keys', {})
         )
     except Exception as e:
         print(f"Dashboard error: {e}")
@@ -1658,6 +1756,83 @@ def api_analytics():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+# Key System Routes (integrated from keysystem.py)
+@app.route('/keysystem/')
+def keysystem_dashboard():
+    if 'logged_in' not in session:
+        return redirect('/login')
+
+    data = db.data
+    user_keys = data.get('user_keys', {})
+    
+    # Calculate statistics
+    total_keys = len(user_keys)
+    active_keys = sum(1 for key_data in user_keys.values() if key_data.get('is_active', False))
+    expired_keys = total_keys - active_keys
+    total_tasks = 4  # Static number of available tasks
+
+    return render_template_string(KEY_SYSTEM_TEMPLATE,
+        user_keys=user_keys,
+        total_keys=total_keys,
+        active_keys=active_keys,
+        expired_keys=expired_keys,
+        total_tasks=total_tasks
+    )
+
+@app.route('/keysystem/generate', methods=['POST'])
+def keysystem_generate():
+    if 'logged_in' not in session:
+        return redirect('/login')
+
+    user_name = request.form['user_name']
+    duration_hours = int(request.form['duration'])
+    note = request.form.get('note', '')
+
+    # Generate random user ID for manual keys
+    import secrets
+    import string
+    from datetime import datetime, timedelta
+    
+    user_id = f"manual_{int(datetime.now().timestamp())}"
+    
+    # Generate random key
+    key = ''.join(secrets.choice(string.ascii_letters + string.digits) for _ in range(16))
+    
+    # Calculate expiry time
+    expiry_time = datetime.now() + timedelta(hours=duration_hours)
+    
+    # Save to database
+    if 'user_keys' not in db.data:
+        db.data['user_keys'] = {}
+        
+    db.data['user_keys'][user_id] = {
+        'key': key,
+        'user_name': user_name,
+        'generated_at': datetime.now().isoformat(),
+        'expires_at': expiry_time.isoformat(),
+        'is_active': True,
+        'note': note,
+        'manual_generated': True
+    }
+    
+    db.save_data()
+    
+    return redirect('/keysystem/')
+
+@app.route('/keysystem/revoke', methods=['POST'])
+def keysystem_revoke():
+    if 'logged_in' not in session:
+        return jsonify({"success": False, "error": "Unauthorized"}), 401
+
+    user_id = request.json.get('user_id')
+    
+    if user_id in db.data.get('user_keys', {}):
+        db.data['user_keys'][user_id]['is_active'] = False
+        db.save_data()
+        return jsonify({"success": True})
+    
+    return jsonify({"success": False, "error": "Key not found"})
+
 @app.route('/bot-control-status')
 def bot_control_status():
     if 'logged_in' not in session:
@@ -1701,8 +1876,16 @@ def stop_bot_endpoint():
 
 def start_web_dashboard():
     try:
-        port = int(os.environ.get("PORT", 5000))
-        print(f"🌐 Starting enhanced web dashboard on port {port}...")
-        app.run(host='0.0.0.0', port=port, debug=False, threaded=True, use_reloader=False)
+        print("🌐 Starting enhanced web dashboard with integrated keep alive on port 5000...")
+        app.run(host='0.0.0.0', port=5000, debug=False, threaded=True, use_reloader=False)
     except Exception as e:
         print(f"❌ Web dashboard error: {e}")
+        time.sleep(5)
+        try:
+            print("🌐 Retrying enhanced web dashboard with integrated keep alive on port 5001...")
+            app.run(host='0.0.0.0', port=5001, debug=False, threaded=True, use_reloader=False)
+        except Exception as e2:
+            print(f"❌ Web dashboard backup port error: {e2}")
+
+if __name__ == '__main__':
+    start_web_dashboard()
