@@ -7,6 +7,8 @@ from database import db
 import time
 import random
 import os
+import fcntl
+import sys
 """
 This script implements a Telegram bot for managing giveaways. 
 
@@ -24,6 +26,38 @@ The bot utilizes several states to guide users through the giveaway creation pro
 and stores active giveaways and participants in dictionaries. It also includes error handling
 and logging for debugging and monitoring purposes.
 """
+
+# Lock file to prevent multiple bot instances
+LOCK_FILE = "/tmp/hackhub_bot.lock"
+
+def acquire_lock():
+    """Acquire exclusive lock to prevent multiple bot instances"""
+    try:
+        lock_fd = open(LOCK_FILE, 'w')
+        fcntl.flock(lock_fd.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+        lock_fd.write(str(os.getpid()))
+        lock_fd.flush()
+        print("🔒 Bot lock acquired successfully")
+        return lock_fd
+    except (IOError, OSError) as e:
+        print(f"❌ Could not acquire bot lock: {e}")
+        print("🚫 Another bot instance is already running!")
+        sys.exit(1)
+
+def release_lock(lock_fd):
+    """Release the bot lock"""
+    try:
+        fcntl.flock(lock_fd.fileno(), fcntl.LOCK_UN)
+        lock_fd.close()
+        if os.path.exists(LOCK_FILE):
+            os.remove(LOCK_FILE)
+        print("🔓 Bot lock released")
+    except:
+        pass
+
+# Acquire lock before starting
+lock_fd = acquire_lock()
+
 # Enable middleware before initializing TeleBot
 apihelper.ENABLE_MIDDLEWARE = True
 # Telegram bots use tokens for secure authentication.
@@ -772,11 +806,30 @@ cleanup_thread.daemon = True
 cleanup_thread.start()
 print("🧹 Periodic key cleanup started")
 
+import signal
+
+def signal_handler(signum, frame):
+    """Handle shutdown signals gracefully"""
+    print(f"\n🛑 Received signal {signum}, shutting down bot gracefully...")
+    release_lock(lock_fd)
+    sys.exit(0)
+
+# Register signal handlers
+signal.signal(signal.SIGINT, signal_handler)
+signal.signal(signal.SIGTERM, signal_handler)
+
 try:
     print("🚀 Bot polling started successfully!")
     bot.polling(none_stop=True, interval=0, timeout=20)
+except KeyboardInterrupt:
+    print("\n🛑 Bot stopped by user")
 except Exception as e:
     print(f"❌ Bot polling error: {e}")
-    # Restart polling after error
+    print("🔄 Attempting to restart bot...")
     time.sleep(5)
-    bot.polling(none_stop=True, interval=0, timeout=20)
+    try:
+        bot.polling(none_stop=True, interval=0, timeout=20)
+    except Exception as e2:
+        print(f"❌ Failed to restart bot: {e2}")
+finally:
+    release_lock(lock_fd)

@@ -1,4 +1,3 @@
-
 """
 Enhanced HackHub Bot Dashboard with Dark Mode, Mobile Optimization, and New Features
 """
@@ -65,7 +64,7 @@ def stop_bot():
                     os.killpg(os.getpgid(bot_pid), signal.SIGTERM)
                 except:
                     pass
-            
+
             bot_process = None
             bot_pid = None
             return True
@@ -80,7 +79,7 @@ def get_system_metrics():
         memory = psutil.virtual_memory()
         disk = psutil.disk_usage('/')
         network = psutil.net_io_counters()
-        
+
         return {
             'cpu_percent': cpu_percent,
             'memory_percent': memory.percent,
@@ -106,10 +105,10 @@ def get_bot_status():
             proc = psutil.Process(bot_pid)
             process_memory = proc.memory_info()
             process_uptime = datetime.now() - datetime.fromtimestamp(proc.create_time())
-            
+
             hours = int(process_uptime.total_seconds() // 3600)
             minutes = int((process_uptime.total_seconds() % 3600) // 60)
-            
+
             return {
                 'status': 'Online',
                 'uptime': f'{hours}h {minutes}m',
@@ -128,7 +127,7 @@ def get_bot_status():
             }
         except psutil.NoSuchProcess:
             bot_running = False
-    
+
     return {
         'status': 'Offline',
         'uptime': '0h 0m',
@@ -146,27 +145,27 @@ def get_analytics_data():
     """Get enhanced analytics data"""
     data = db.data
     now = datetime.now()
-    
+
     # Calculate time-based statistics
     daily_stats = {'participations': 0, 'completions': 0, 'new_users': 0}
     weekly_stats = {'participations': 0, 'completions': 0, 'new_users': 0}
     monthly_stats = {'participations': 0, 'completions': 0, 'new_users': 0}
-    
+
     # Top participants
     user_participation_counts = {}
     for user_id, stats in data.get('user_stats', {}).items():
         user_participation_counts[stats.get('name', f'User {user_id}')] = stats.get('total_participations', 0)
-    
+
     top_participants = sorted(user_participation_counts.items(), key=lambda x: x[1], reverse=True)[:5]
-    
+
     # Recent activity
     recent_giveaways = data.get('completed_giveaways', [])[-10:]
-    
+
     # Win rate analysis
     total_giveaways = len(data.get('completed_giveaways', []))
     total_participants = sum(stats.get('total_participations', 0) for stats in data.get('user_stats', {}).values())
     avg_participation = total_participants / total_giveaways if total_giveaways > 0 else 0
-    
+
     return {
         'daily_stats': daily_stats,
         'weekly_stats': weekly_stats,
@@ -410,7 +409,7 @@ LOGIN_TEMPLATE = """
                 padding: 2rem 1.5rem;
                 margin: 1rem;
             }
-            
+
             .logo h1 {
                 font-size: 1.75rem;
             }
@@ -805,6 +804,7 @@ DASHBOARD_TEMPLATE = """
             left: 0;
             right: 0;
             height: 4px;
+```python
             background: var(--accent-primary);
             opacity: 0;
             transition: opacity 0.3s ease;
@@ -1171,9 +1171,9 @@ DASHBOARD_TEMPLATE = """
             <div id="bot-control" class="tab-content">
                 <div class="section">
                     <h2>🎮 Bot Control Panel</h2>
-                    
+
                     <div id="alert-container" style="margin-bottom: 1rem;"></div>
-                    
+
                     <div class="stats-grid" style="margin-bottom: 2rem;">
                         <div class="stat-card">
                             <div id="bot-status-indicator" class="stat-number" style="color: var(--accent-danger);">Checking...</div>
@@ -1192,7 +1192,7 @@ DASHBOARD_TEMPLATE = """
                             <div class="stat-label">Bot CPU</div>
                         </div>
                     </div>
-                    
+
                     <div style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 2rem; flex-wrap: wrap;">
                         <button id="start-bot-btn" class="btn" onclick="startBotControl()" style="background: linear-gradient(135deg, #48bb78, #38a169); color: white;">
                             ▶️ Start Bot
@@ -1228,14 +1228,14 @@ DASHBOARD_TEMPLATE = """
                                     </span>
                                 </div>
                             </div>
-                            
+
                             <div style="background: var(--bg-tertiary); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
                                 <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
                                     <span style="color: var(--text-muted);">Last Seen</span>
                                     <span style="font-weight: 500;">{{ player.time_ago }}</span>
                                 </div>
                             </div>
-                            
+
                             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 1rem;">
                                 <div style="text-align: center;">
                                     <div style="font-weight: 700; font-size: 1.25rem; color: #667eea;">{{ player.total_participations }}</div>
@@ -1260,7 +1260,7 @@ DASHBOARD_TEMPLATE = """
             <div id="system" class="tab-content">
                 <div class="section">
                     <h2>⚙️ System Metrics</h2>
-                    
+
                     {% if bot_status.system_metrics %}
                     <div class="stats-grid">
                         <div class="stat-card">
@@ -1286,7 +1286,7 @@ DASHBOARD_TEMPLATE = """
                         </div>
                     </div>
                     {% endif %}
-                    
+
                     <div class="chart-container">
                         <h3 style="margin-bottom: 1rem;">📊 Performance Overview</h3>
                         <div style="display: grid; gap: 1rem;">
@@ -1322,11 +1322,11 @@ DASHBOARD_TEMPLATE = """
         function toggleTheme() {
             const currentTheme = document.documentElement.getAttribute('data-theme');
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            
+
             document.documentElement.setAttribute('data-theme', newTheme);
             localStorage.setItem('dashboard-theme', newTheme);
             updateThemeIcon(newTheme);
-            
+
             showNotification(newTheme === 'dark' ? '🌙 Dark mode enabled' : '☀️ Light mode enabled');
         }
 
@@ -1344,9 +1344,9 @@ DASHBOARD_TEMPLATE = """
                     <button onclick="this.parentElement.parentElement.remove()" style="background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.25rem;">×</button>
                 </div>
             `;
-            
+
             document.body.appendChild(notification);
-            
+
             setTimeout(() => notification.classList.add('show'), 100);
             setTimeout(() => {
                 notification.classList.remove('show');
@@ -1364,7 +1364,7 @@ DASHBOARD_TEMPLATE = """
 
             document.getElementById(tabName).classList.add('active');
             event.target.classList.add('active');
-            
+
             localStorage.setItem('active-tab', tabName);
         }
 
@@ -1377,73 +1377,27 @@ DASHBOARD_TEMPLATE = """
             }
         }
 
-        // Bot Control Functions
-        let isControlLoading = false;
-
-        function showAlert(message, type = 'success') {
-            const alertContainer = document.getElementById('alert-container');
-            const alertClass = type === 'success' ? 'alert-success' : 'alert-error';
-            
-            alertContainer.innerHTML = `
-                <div class="alert ${alertClass}">
-                    ${message}
-                </div>
-            `;
-            
-            setTimeout(() => {
-                alertContainer.innerHTML = '';
-            }, 5000);
-        }
-
-        function updateBotControlStatus(data) {
-            const statusIndicator = document.getElementById('bot-status-indicator');
-            const botUptime = document.getElementById('bot-uptime');
-            const botMemory = document.getElementById('bot-memory');
-            const botCpu = document.getElementById('bot-cpu');
-            const startBtn = document.getElementById('start-bot-btn');
-            const stopBtn = document.getElementById('stop-bot-btn');
-
-            if (data.running) {
-                statusIndicator.textContent = 'Online';
-                statusIndicator.style.color = 'var(--accent-success)';
-                
-                const uptimeHours = Math.floor(data.bot_uptime / 3600);
-                const uptimeMinutes = Math.floor((data.bot_uptime % 3600) / 60);
-                botUptime.textContent = `${uptimeHours}h ${uptimeMinutes}m`;
-                botMemory.textContent = `${data.bot_memory.toFixed(1)}MB`;
-                botCpu.textContent = `${data.bot_cpu.toFixed(1)}%`;
-                
-                startBtn.disabled = true;
-                stopBtn.disabled = false;
-            } else {
-                statusIndicator.textContent = 'Offline';
-                statusIndicator.style.color = 'var(--accent-danger)';
-                botUptime.textContent = '-';
-                botMemory.textContent = '-';
-                botCpu.textContent = '-';
-                
-                startBtn.disabled = false;
-                stopBtn.disabled = true;
-            }
-        }
-
+        // Bot Control Functions with enhanced error handling
         async function startBotControl() {
-            if (isControlLoading) return;
-            
-            isControlLoading = true;
             const startBtn = document.getElementById('start-bot-btn');
-            const originalText = startBtn.innerHTML;
-            startBtn.innerHTML = '<div class="loading-spinner"></div> Starting...';
-            startBtn.disabled = true;
-            
+            if (!startBtn) return;
+
             try {
+                startBtn.disabled = true;
+                startBtn.innerHTML = '⏳ Starting...';
+
+                showAlert('Starting bot...', 'info');
                 const response = await fetch('/start-bot', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' }
                 });
-                
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+
                 const result = await response.json();
-                
+
                 if (result.success) {
                     showAlert('✅ Bot started successfully!', 'success');
                     showNotification('🤖 Bot started successfully!');
@@ -1452,31 +1406,34 @@ DASHBOARD_TEMPLATE = """
                     showAlert(`❌ Failed to start bot: ${result.message}`, 'error');
                 }
             } catch (error) {
+                console.error('Start bot error:', error);
                 showAlert(`❌ Error starting bot: ${error.message}`, 'error');
             } finally {
-                startBtn.innerHTML = originalText;
                 startBtn.disabled = false;
-                isControlLoading = false;
+                startBtn.innerHTML = '▶️ Start Bot';
             }
         }
 
         async function stopBotControl() {
-            if (isControlLoading) return;
-            
-            isControlLoading = true;
             const stopBtn = document.getElementById('stop-bot-btn');
-            const originalText = stopBtn.innerHTML;
-            stopBtn.innerHTML = '<div class="loading-spinner"></div> Stopping...';
-            stopBtn.disabled = true;
-            
+            if (!stopBtn) return;
+
             try {
+                stopBtn.disabled = true;
+                stopBtn.innerHTML = '⏳ Stopping...';
+
+                showAlert('Stopping bot...', 'info');
                 const response = await fetch('/stop-bot', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' }
                 });
-                
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+
                 const result = await response.json();
-                
+
                 if (result.success) {
                     showAlert('✅ Bot stopped successfully!', 'success');
                     showNotification('🛑 Bot stopped successfully!');
@@ -1485,21 +1442,65 @@ DASHBOARD_TEMPLATE = """
                     showAlert(`❌ Failed to stop bot: ${result.message}`, 'error');
                 }
             } catch (error) {
+                console.error('Stop bot error:', error);
                 showAlert(`❌ Error stopping bot: ${error.message}`, 'error');
             } finally {
-                stopBtn.innerHTML = originalText;
                 stopBtn.disabled = false;
-                isControlLoading = false;
+                stopBtn.innerHTML = '⏹️ Stop Bot';
             }
         }
 
         async function refreshBotStatus() {
             try {
                 const response = await fetch('/bot-control-status');
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+
                 const data = await response.json();
-                updateBotControlStatus(data);
+
+                const statusIndicator = document.getElementById('bot-status-indicator');
+                const uptimeElement = document.getElementById('bot-uptime');
+                const memoryElement = document.getElementById('bot-memory');
+                const cpuElement = document.getElementById('bot-cpu');
+
+                if (!statusIndicator || !uptimeElement || !memoryElement || !cpuElement) {
+                    console.warn('Bot status elements not found');
+                    return;
+                }
+
+                if (data.error) {
+                    statusIndicator.textContent = `⚠️ Error: ${data.error}`;
+                    statusIndicator.style.color = 'var(--accent-warning)';
+
+                    uptimeElement.textContent = '-';
+                    memoryElement.textContent = '-';
+                    cpuElement.textContent = '-';
+                } else if (data.running) {
+                    statusIndicator.textContent = '✅ Running';
+                    statusIndicator.style.color = 'var(--accent-success)';
+
+                    const uptimeHours = Math.floor((data.uptime || 0) / 3600);
+                    const uptimeMinutes = Math.floor(((data.uptime || 0) % 3600) / 60);
+                    uptimeElement.textContent = `${uptimeHours}h ${uptimeMinutes}m`;
+                    memoryElement.textContent = `${(data.memory || 0).toFixed(1)}MB`;
+                    cpuElement.textContent = `${(data.cpu || 0).toFixed(1)}%`;
+                } else {
+                    statusIndicator.textContent = '❌ Stopped';
+                    statusIndicator.style.color = 'var(--accent-danger)';
+
+                    uptimeElement.textContent = '-';
+                    memoryElement.textContent = '-';
+                    cpuElement.textContent = '-';
+                }
             } catch (error) {
-                console.error('Error fetching bot control status:', error);
+                console.error('Error fetching bot status:', error);
+                const statusIndicator = document.getElementById('bot-status-indicator');
+                if (statusIndicator) {
+                    statusIndicator.textContent = '⚠️ Connection Error';
+                    statusIndicator.style.color = 'var(--accent-warning)';
+                }
             }
         }
 
@@ -1540,27 +1541,42 @@ DASHBOARD_TEMPLATE = """
             location.reload();
         }
 
-        // Error Handling
+        // Enhanced error handling
         window.addEventListener('error', function(e) {
             console.error('Dashboard Error:', e.error);
-            showNotification('❌ An error occurred. Please refresh the page.', 'error');
+            if (e.error && e.error.message) {
+                showAlert(`❌ Error: ${e.error.message}`, 'error');
+            } else {
+                showAlert('❌ An error occurred. Please refresh the page.', 'error');
+            }
         });
 
-        // Initialize everything
+        window.addEventListener('unhandledrejection', function(e) {
+            console.error('Unhandled Promise Rejection:', e.reason);
+            showAlert('❌ Network error occurred. Please try again.', 'error');
+        });
+
+        // Initialize on load with error handling
         document.addEventListener('DOMContentLoaded', function() {
-            initializeTheme();
-            restoreActiveTab();
-            refreshBotStatus();
-            updateCountdowns();
-            
-            // Auto-refresh
-            setInterval(refreshBotStatus, 5000);
-            setInterval(updateCountdowns, 1000);
-            
-            // Add fade-in animation
-            document.querySelectorAll('.stat-card').forEach((card, index) => {
-                card.style.animationDelay = `${index * 0.1}s`;
-            });
+            try {
+                initializeTheme();
+                restoreActiveTab();
+                refreshBotStatus();
+                updateCountdowns();
+
+                // Auto-refresh
+                setInterval(refreshBotStatus, 5000);
+                setInterval(updateCountdowns, 1000);
+
+                // Add fade-in animation
+                document.querySelectorAll('.stat-card').forEach((card, index) => {
+                    card.style.animationDelay = `${index * 0.1}s`;
+                });
+
+            } catch (error) {
+                console.error('Dashboard initialization error:', error);
+                showAlert('❌ Failed to initialize dashboard', 'error');
+            }
         });
     </script>
 </body>
@@ -1655,11 +1671,11 @@ def bot_control_status():
 def start_bot_endpoint():
     if 'logged_in' not in session:
         return jsonify({"error": "Unauthorized"}), 401
-    
+
     try:
         if get_bot_status()['running']:
             return jsonify({'success': False, 'message': 'Bot is already running'})
-        
+
         if start_bot():
             return jsonify({'success': True, 'message': 'Bot started successfully'})
         else:
@@ -1671,11 +1687,11 @@ def start_bot_endpoint():
 def stop_bot_endpoint():
     if 'logged_in' not in session:
         return jsonify({"error": "Unauthorized"}), 401
-    
+
     try:
         if not get_bot_status()['running']:
             return jsonify({'success': False, 'message': 'Bot is not running'})
-        
+
         if stop_bot():
             return jsonify({'success': True, 'message': 'Bot stopped successfully'})
         else:
