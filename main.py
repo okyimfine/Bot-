@@ -138,16 +138,16 @@ def end_giveaway(msg_id, manual=False, expired_offline=False):
             db.record_winner(winner_id, giveaway_data.get('title', 'Unknown'))
 
         if expired_offline:
-            text = f"🎊 *GIVEAWAY TAMAT!* ⏰ (Tamat semasa bot offline)\n\n🏆 *Pemenang:* {winner_display}\n👥 *Jumlah penyertaan:* {count} pengguna\n\n🎁 *Hadiah:* {giveaway_data.get('gift', 'N/A') if giveaway_data else 'N/A'}"
+            text = f"🎊 *GIVEAWAY ENDED!* ⏰ (Ended while bot was offline)\n\n🏆 *Winner:* {winner_display}\n👥 *Total participants:* {count} users\n\n🎁 *Prize:* {giveaway_data.get('gift', 'N/A') if giveaway_data else 'N/A'}"
         else:
-            text = f"🎊 *GIVEAWAY TAMAT!*\n\n🏆 *Pemenang:* {winner_display}\n👥 *Jumlah penyertaan:* {count} pengguna\n\n🎁 *Hadiah:* {giveaway_data.get('gift', 'N/A') if giveaway_data else 'N/A'}"
+            text = f"🎊 *GIVEAWAY ENDED!*\n\n🏆 *Winner:* {winner_display}\n👥 *Total participants:* {count} users\n\n🎁 *Prize:* {giveaway_data.get('gift', 'N/A') if giveaway_data else 'N/A'}"
 
         print(f"🏆 Winner selected: {winner_display}")
     else:
         if expired_offline:
-            text = f"🎊 *GIVEAWAY TAMAT!* ⏰ (Tamat semasa bot offline)\n\n😔 Tiada penyertaan untuk giveaway ini"
+            text = f"🎊 *GIVEAWAY ENDED!* ⏰ (Ended while bot was offline)\n\n😔 No participants for this giveaway"
         else:
-            text = f"🎊 *GIVEAWAY TAMAT!*\n\n😔 Tiada penyertaan untuk giveaway ini"
+            text = f"🎊 *GIVEAWAY ENDED!*\n\n😔 No participants for this giveaway"
 
     print(f"📊 Giveaway {msg_id} ended with {count} participants")
 
@@ -238,49 +238,49 @@ def handle_start(message):
     if db.validate_user_key(user_id):
         existing_key = db.get_user_key(user_id)
         sent_msg = bot.send_message(message.chat.id,
-            f"✅ Selamat datang kembali ke Bot Giveaway HackHub!\n\n"
-            f"🔑 **Kunci anda yang masih aktif:**\n"
+            f"✅ Welcome back to HackHub Giveaway Bot!\n\n"
+            f"🔑 **Your active key:**\n"
             f"`{existing_key}`\n\n"
-            f"⏰ Kunci ini akan tamat dalam 24 jam dari masa dijana.\n\n"
-            f"📚 **Arahan penting:**\n"
-            f"• /create – Buat giveaway baharu\n"
-            f"• /templates – Gunakan template giveaway\n"
-            f"• /list – Senarai giveaway aktif\n"
-            f"• /listjoin – Senarai penyertaan giveaway\n"
-            f"• /points – Semak mata anda\n"
-            f"• /leaderboard – Papan pendahulu\n"
-            f"• /end [message_id] – Tamatkan giveaway (jika unlimited)\n"
-            f"• /mykey – Semak kunci semasa\n\n"
-            f"🪙 **Sistem Mata:**\n"
-            f"• +10 mata - Sertai giveaway\n"
-            f"• +100 mata - Menang giveaway\n\n"
-            f"💡 Gunakan /create untuk mula sekarang!",
+            f"⏰ This key will expire in 24 hours from generation.\n\n"
+            f"📚 **Available Commands:**\n"
+            f"• /create – Create new giveaway\n"
+            f"• /templates – Use giveaway templates\n"
+            f"• /list – List active giveaways\n"
+            f"• /listjoin – List giveaway participants\n"
+            f"• /points – Check your points\n"
+            f"• /leaderboard – View leaderboard\n"
+            f"• /end [message_id] – End giveaway (if unlimited)\n"
+            f"• /mykey – Check current key\n\n"
+            f"🪙 **Points System:**\n"
+            f"• +10 points - Join giveaway\n"
+            f"• +100 points - Win giveaway\n\n"
+            f"💡 Use /create to start now!",
             parse_mode="Markdown"
         )
     else:
         # Generate new key
         new_key = db.generate_user_key(user_id, user_name)
         sent_msg = bot.send_message(message.chat.id,
-            f"🎉 Selamat datang ke Bot Giveaway HackHub!\n\n"
-            f"🔑 **Kunci 24 jam anda:**\n"
+            f"🎉 Welcome to HackHub Giveaway Bot!\n\n"
+            f"🔑 **Your 24-hour key:**\n"
             f"`{new_key}`\n\n"
-            f"⚠️ **PENTING:** Simpan kunci ini dengan selamat!\n"
-            f"• Kunci ini akan tamat dalam 24 jam\n"
-            f"• Anda memerlukan kunci ini untuk menggunakan bot\n"
-            f"• Kunci disimpan walaupun bot dimatikan\n\n"
-            f"📚 **Arahan penting:**\n"
-            f"• /create – Buat giveaway baharu\n"
-            f"• /templates – Gunakan template giveaway\n"
-            f"• /list – Senarai giveaway aktif\n"
-            f"• /listjoin – Senarai penyertaan giveaway\n"
-            f"• /points – Semak mata anda\n"
-            f"• /leaderboard – Papan pendahulu\n"
-            f"• /end [message_id] – Tamatkan giveaway (jika unlimited)\n"
-            f"• /mykey – Semak kunci semasa\n\n"
-            f"🪙 **Sistem Mata:**\n"
-            f"• +10 mata - Sertai giveaway\n"
-            f"• +100 mata - Menang giveaway\n\n"
-            f"💡 Gunakan /create untuk mula sekarang!",
+            f"⚠️ **IMPORTANT:** Save this key safely!\n"
+            f"• This key expires in 24 hours\n"
+            f"• You need this key to use the bot\n"
+            f"• Key is saved even when bot is offline\n\n"
+            f"📚 **Available Commands:**\n"
+            f"• /create – Create new giveaway\n"
+            f"• /templates – Use giveaway templates\n"
+            f"• /list – List active giveaways\n"
+            f"• /listjoin – List giveaway participants\n"
+            f"• /points – Check your points\n"
+            f"• /leaderboard – View leaderboard\n"
+            f"• /end [message_id] – End giveaway (if unlimited)\n"
+            f"• /mykey – Check current key\n\n"
+            f"🪙 **Points System:**\n"
+            f"• +10 points - Join giveaway\n"
+            f"• +100 points - Win giveaway\n\n"
+            f"💡 Use /create to start now!",
             parse_mode="Markdown"
         )
 
@@ -305,13 +305,13 @@ def handle_getkey(message):
     # Generate new key (overwrite existing one)
     new_key = db.generate_user_key(user_id, user_name)
     sent_msg = bot.send_message(message.chat.id,
-        f"🔑 **Kunci baharu anda:**\n"
+        f"🔑 **Your new key:**\n"
         f"`{new_key}`\n\n"
-        f"⚠️ **PENTING:** Simpan kunci ini dengan selamat!\n"
-        f"• Kunci ini akan tamat dalam 24 jam\n"
-        f"• Anda memerlukan kunci ini untuk menggunakan bot\n"
-        f"• Kunci lama (jika ada) telah diganti\n\n"
-        f"📝 **Untuk menggunakan bot:** Hantar kunci anda kepada saya",
+        f"⚠️ **IMPORTANT:** Save this key safely!\n"
+        f"• This key expires in 24 hours\n"
+        f"• You need this key to use the bot\n"
+        f"• Previous key (if any) has been replaced\n\n"
+        f"📝 **To use the bot:** Send your key to me",
         parse_mode="Markdown"
     )
 
@@ -365,30 +365,30 @@ def handle_key_verification(message):
 
     if key_found:
         sent_msg = bot.send_message(message.chat.id,
-            f"✅ **Kunci berjaya disahkan!**\n\n"
-            f"🎉 Selamat datang ke Bot Giveaway HackHub!\n\n"
-            f"📚 **Arahan tersedia:**\n"
-            f"• /create – Buat giveaway baharu\n"
-            f"• /templates – Gunakan template giveaway\n"
-            f"• /list – Senarai giveaway aktif\n"
-            f"• /listjoin – Senarai penyertaan giveaway\n"
-            f"• /points – Semak mata anda\n"
-            f"• /leaderboard – Papan pendahulu\n"
-            f"• /end [message_id] – Tamatkan giveaway (jika unlimited)\n"
-            f"• /mykey – Semak kunci semasa\n\n"
-            f"🪙 **Sistem Mata:**\n"
-            f"• +10 mata - Sertai giveaway\n"
-            f"• +100 mata - Menang giveaway\n\n"
-            f"💡 Gunakan /create untuk mula sekarang!",
+            f"✅ **Key verified successfully!**\n\n"
+            f"🎉 Welcome to HackHub Giveaway Bot!\n\n"
+            f"📚 **Available Commands:**\n"
+            f"• /create – Create new giveaway\n"
+            f"• /templates – Use giveaway templates\n"
+            f"• /list – List active giveaways\n"
+            f"• /listjoin – List giveaway participants\n"
+            f"• /points – Check your points\n"
+            f"• /leaderboard – View leaderboard\n"
+            f"• /end [message_id] – End giveaway (if unlimited)\n"
+            f"• /mykey – Check current key\n\n"
+            f"🪙 **Points System:**\n"
+            f"• +10 points - Join giveaway\n"
+            f"• +100 points - Win giveaway\n\n"
+            f"💡 Use /create to start now!",
             parse_mode="Markdown"
         )
         print(f"✅ User {user_name} ({user_id}) successfully verified key")
     else:
         sent_msg = bot.send_message(message.chat.id,
-            f"❌ **Kunci tidak sah atau telah tamat!**\n\n"
-            f"🔄 Gunakan /getkey untuk mendapatkan kunci baharu.\n"
-            f"⏰ Setiap kunci adalah sah selama 24 jam.\n\n"
-            f"📝 **Untuk mendapatkan kunci:** Hantar /getkey",
+            f"❌ **Invalid or expired key!**\n\n"
+            f"🔄 Use /getkey to get a new key.\n"
+            f"⏰ Each key is valid for 24 hours.\n\n"
+            f"📝 **To get a key:** Send /getkey",
             parse_mode="Markdown"
         )
         print(f"❌ User {user_name} ({user_id}) provided invalid key")
@@ -410,10 +410,10 @@ def handle_create(message):
     # Check if user has valid key
     if not db.validate_user_key(user_id):
         sent_msg = bot.send_message(message.chat.id,
-            "❌ **Kunci tidak sah atau telah tamat!**\n\n"
-            "🔄 Gunakan /getkey untuk mendapatkan kunci baharu.\n"
-            "⏰ Setiap kunci adalah sah selama 24 jam.\n\n"
-            "📝 **Untuk mendapatkan kunci:** Hantar /getkey",
+            "❌ **Invalid or expired key!**\n\n"
+            "🔄 Use /getkey to get a new key.\n"
+            "⏰ Each key is valid for 24 hours.\n\n"
+            "📝 **To get a key:** Send /getkey",
             parse_mode="Markdown"
         )
         Timer(10, lambda: delete_message_safe(message.chat.id, sent_msg.message_id)).start()
@@ -421,7 +421,150 @@ def handle_create(message):
 
     print(f"📝 User {user_name} ({user_id}) started creating giveaway")
     user_states[user_id] = {'step': STATE_WAIT_TITLE, 'data': {}}
-    bot.send_message(message.chat.id, "📝 Masukkan tajuk giveaway:", parse_mode="Markdown")
+    bot.send_message(message.chat.id, "📝 Enter giveaway title:", parse_mode="Markdown")
+
+@bot.message_handler(commands=['templates'])
+def handle_templates(message):
+    user_id = message.from_user.id
+    user_name = message.from_user.first_name
+
+    # Delete user's command for security
+    try:
+        bot.delete_message(message.chat.id, message.message_id)
+    except:
+        pass
+
+    # Check if user has valid key
+    if not db.validate_user_key(user_id):
+        sent_msg = bot.send_message(message.chat.id,
+            "❌ **Invalid or expired key!**\n\n"
+            "🔄 Use /getkey to get a new key.\n"
+            "⏰ Each key is valid for 24 hours.\n\n"
+            "📝 **To get a key:** Send /getkey",
+            parse_mode="Markdown"
+        )
+        Timer(10, lambda: delete_message_safe(message.chat.id, sent_msg.message_id)).start()
+        return
+
+    print(f"📋 User {user_name} ({user_id}) requested giveaway templates")
+    
+    markup = InlineKeyboardMarkup()
+    templates = [
+        ("🎮 Gaming Account", "template:gaming"),
+        ("💰 Cash Prize", "template:cash"),
+        ("🎁 Product Giveaway", "template:product"),
+        ("🔑 Software License", "template:software"),
+        ("🏆 Premium Access", "template:premium")
+    ]
+    
+    for label, callback_data in templates:
+        markup.add(InlineKeyboardButton(label, callback_data=callback_data))
+    
+    bot.send_message(message.chat.id, 
+        "🎨 **Choose a Giveaway Template:**\n\n"
+        "Select a template to quickly create a giveaway with pre-filled information.",
+        reply_markup=markup, parse_mode="Markdown")
+
+@bot.message_handler(commands=['points'])
+def handle_points(message):
+    user_id = message.from_user.id
+    user_name = message.from_user.first_name
+
+    # Delete user's command for security
+    try:
+        bot.delete_message(message.chat.id, message.message_id)
+    except:
+        pass
+
+    # Check if user has valid key
+    if not db.validate_user_key(user_id):
+        sent_msg = bot.send_message(message.chat.id,
+            "❌ **Invalid or expired key!**\n\n"
+            "🔄 Use /getkey to get a new key.\n"
+            "⏰ Each key is valid for 24 hours.\n\n"
+            "📝 **To get a key:** Send /getkey",
+            parse_mode="Markdown"
+        )
+        Timer(10, lambda: delete_message_safe(message.chat.id, sent_msg.message_id)).start()
+        return
+
+    print(f"🪙 User {user_name} ({user_id}) checking points")
+    
+    user_stats = db.data.get('user_stats', {}).get(str(user_id), {})
+    participations = user_stats.get('total_participations', 0)
+    wins = user_stats.get('total_wins', 0)
+    total_points = (participations * 10) + (wins * 100)
+    
+    bot.send_message(message.chat.id,
+        f"🪙 **Your Points Summary:**\n\n"
+        f"👤 **Player:** {user_name}\n"
+        f"🎯 **Total Points:** {total_points}\n\n"
+        f"📊 **Point Breakdown:**\n"
+        f"• Participations: {participations} × 10 = {participations * 10} points\n"
+        f"• Wins: {wins} × 100 = {wins * 100} points\n\n"
+        f"🏆 **Statistics:**\n"
+        f"• Total Giveaways Joined: {participations}\n"
+        f"• Total Wins: {wins}\n"
+        f"• Win Rate: {(wins/participations*100 if participations > 0 else 0):.1f}%",
+        parse_mode="Markdown")
+
+@bot.message_handler(commands=['leaderboard'])
+def handle_leaderboard(message):
+    user_id = message.from_user.id
+    user_name = message.from_user.first_name
+
+    # Delete user's command for security
+    try:
+        bot.delete_message(message.chat.id, message.message_id)
+    except:
+        pass
+
+    # Check if user has valid key
+    if not db.validate_user_key(user_id):
+        sent_msg = bot.send_message(message.chat.id,
+            "❌ **Invalid or expired key!**\n\n"
+            "🔄 Use /getkey to get a new key.\n"
+            "⏰ Each key is valid for 24 hours.\n\n"
+            "📝 **To get a key:** Send /getkey",
+            parse_mode="Markdown"
+        )
+        Timer(10, lambda: delete_message_safe(message.chat.id, sent_msg.message_id)).start()
+        return
+
+    print(f"🏆 User {user_name} ({user_id}) requested leaderboard")
+    
+    user_stats = db.data.get('user_stats', {})
+    if not user_stats:
+        bot.send_message(message.chat.id, "❌ No statistics available yet.")
+        return
+
+    # Calculate points for each user and sort
+    leaderboard = []
+    for uid, stats in user_stats.items():
+        participations = stats.get('total_participations', 0)
+        wins = stats.get('total_wins', 0)
+        total_points = (participations * 10) + (wins * 100)
+        leaderboard.append({
+            'name': stats.get('name', 'Unknown'),
+            'points': total_points,
+            'wins': wins,
+            'participations': participations
+        })
+    
+    # Sort by points (descending)
+    leaderboard.sort(key=lambda x: x['points'], reverse=True)
+    
+    text = "🏆 **Leaderboard - Top Players:**\n\n"
+    
+    for i, player in enumerate(leaderboard[:10], 1):
+        medal = "🥇" if i == 1 else "🥈" if i == 2 else "🥉" if i == 3 else f"{i}."
+        text += f"{medal} **{player['name']}**\n"
+        text += f"   🪙 {player['points']} points | 🏆 {player['wins']} wins | 🎯 {player['participations']} joins\n\n"
+    
+    if len(leaderboard) == 0:
+        text += "❌ No players found."
+    
+    bot.send_message(message.chat.id, text, parse_mode="Markdown")
 
 @bot.message_handler(commands=['list'])
 def handle_list(message):
@@ -437,10 +580,10 @@ def handle_list(message):
     # Check if user has valid key
     if not db.validate_user_key(user_id):
         sent_msg = bot.send_message(message.chat.id,
-            "❌ **Kunci tidak sah atau telah tamat!**\n\n"
-            "🔄 Gunakan /getkey untuk mendapatkan kunci baharu.\n"
-            "⏰ Setiap kunci adalah sah selama 24 jam.\n\n"
-            "📝 **Untuk mendapatkan kunci:** Hantar /getkey",
+            "❌ **Invalid or expired key!**\n\n"
+            "🔄 Use /getkey to get a new key.\n"
+            "⏰ Each key is valid for 24 hours.\n\n"
+            "📝 **To get a key:** Send /getkey",
             parse_mode="Markdown"
         )
         Timer(10, lambda: delete_message_safe(message.chat.id, sent_msg.message_id)).start()
@@ -448,19 +591,19 @@ def handle_list(message):
 
     print(f"📋 User {user_name} ({user_id}) requested giveaway list")
     if not active_giveaways:
-        bot.send_message(message.chat.id, "❌ Tiada giveaway aktif.")
+        bot.send_message(message.chat.id, "❌ No active giveaways.")
         return
 
-    text = "📋 *Senarai Giveaway Aktif:*\n\n"
+    text = "📋 *Active Giveaways List:*\n\n"
     for mid, g in active_giveaways.items():
         title = g.get('title', 'Unknown')
         gift = g.get('gift', 'Unknown')
         if g.get('end_time'):
             remaining = max(0, int(g['end_time'] - time.time()))
             if remaining > 0:
-                remaining_text = f"{remaining} saat"
+                remaining_text = f"{remaining} seconds"
             else:
-                remaining_text = "⏰ Tamat"
+                remaining_text = "⏰ Ended"
         else:
             remaining_text = "♾️ Unlimited"
         text += f"• *{title}* – 🎁 {gift} – ⏳ {remaining_text}\n"
@@ -480,10 +623,10 @@ def handle_listjoin(message):
     # Check if user has valid key
     if not db.validate_user_key(user_id):
         sent_msg = bot.send_message(message.chat.id,
-            "❌ **Kunci tidak sah atau telah tamat!**\n\n"
-            "🔄 Gunakan /getkey untuk mendapatkan kunci baharu.\n"
-            "⏰ Setiap kunci adalah sah selama 24 jam.\n\n"
-            "📝 **Untuk mendapatkan kunci:** Hantar /getkey",
+            "❌ **Invalid or expired key!**\n\n"
+            "🔄 Use /getkey to get a new key.\n"
+            "⏰ Each key is valid for 24 hours.\n\n"
+            "📝 **To get a key:** Send /getkey",
             parse_mode="Markdown"
         )
         Timer(10, lambda: delete_message_safe(message.chat.id, sent_msg.message_id)).start()
@@ -491,17 +634,17 @@ def handle_listjoin(message):
 
     print(f"👥 User {user_name} ({user_id}) requested participants list")
     if not active_giveaways:
-        bot.send_message(message.chat.id, "❌ Tiada giveaway aktif.")
+        bot.send_message(message.chat.id, "❌ No active giveaways.")
         return
 
-    text = "👥 *Senarai Penyertaan Giveaway:*\n\n"
+    text = "👥 *Giveaway Participants List:*\n\n"
     for mid, g in active_giveaways.items():
         title = g.get('title', 'Unknown')
         participant_count = len(participants.get(mid, set()))
-        text += f"• *{title}* – 👤 {participant_count} penyertaan\n"
+        text += f"• *{title}* – 👤 {participant_count} participants\n"
 
-    if len(text.strip()) == len("👥 *Senarai Penyertaan Giveaway:*"):
-        text += "❌ Tiada penyertaan pada giveaway aktif."
+    if len(text.strip()) == len("👥 *Giveaway Participants List:*"):
+        text += "❌ No participants in active giveaways."
 
     bot.send_message(message.chat.id, text, parse_mode="Markdown")
 
@@ -531,22 +674,22 @@ def handle_mykey(message):
         minutes_remaining = int((time_remaining.total_seconds() % 3600) // 60)
 
         sent_msg = bot.send_message(message.chat.id,
-            f"🔑 **Kunci anda yang aktif:**\n"
+            f"🔑 **Your active key:**\n"
             f"`{user_key}`\n\n"
-            f"📅 **Dijana pada:** {generated_time.strftime('%d/%m/%Y %H:%M:%S')}\n"
-            f"⏰ **Masa tinggal:** {hours_remaining} jam {minutes_remaining} minit\n"
-            f"🕐 **Tamat pada:** {expiry_time.strftime('%d/%m/%Y %H:%M:%S')}\n\n"
-            f"✅ Kunci masih aktif dan boleh digunakan!",
+            f"📅 **Generated on:** {generated_time.strftime('%d/%m/%Y %H:%M:%S')}\n"
+            f"⏰ **Time remaining:** {hours_remaining} hours {minutes_remaining} minutes\n"
+            f"🕐 **Expires on:** {expiry_time.strftime('%d/%m/%Y %H:%M:%S')}\n\n"
+            f"✅ Key is still active and can be used!",
             parse_mode="Markdown"
         )
         # Delete this message after 20 seconds for security
         Timer(20, lambda: delete_message_safe(message.chat.id, sent_msg.message_id)).start()
     else:
         sent_msg = bot.send_message(message.chat.id,
-            "❌ **Tiada kunci aktif atau kunci telah tamat!**\n\n"
-            "🔄 Gunakan /getkey untuk mendapatkan kunci baharu.\n"
-            "⏰ Setiap kunci adalah sah selama 24 jam.\n\n"
-            "📝 **Untuk mendapatkan kunci:** Hantar /getkey",
+            "❌ **No active key or key has expired!**\n\n"
+            "🔄 Use /getkey to get a new key.\n"
+            "⏰ Each key is valid for 24 hours.\n\n"
+            "📝 **To get a key:** Send /getkey",
             parse_mode="Markdown"
         )
         Timer(10, lambda: delete_message_safe(message.chat.id, sent_msg.message_id)).start()
@@ -557,20 +700,20 @@ def handle_end(message):
     try:
         parts = message.text.split()
         if len(parts) < 2:
-            bot.reply_to(message, "❌ Format salah. Guna: /end [message_id]")
+            bot.reply_to(message, "❌ Wrong format. Use: /end [message_id]")
             return
 
         msg_id = int(parts[1])
         if msg_id in active_giveaways:
             end_giveaway(msg_id, manual=True)
-            bot.reply_to(message, f"✅ Giveaway {msg_id} ditamatkan.")
+            bot.reply_to(message, f"✅ Giveaway {msg_id} ended.")
         else:
-            bot.reply_to(message, f"❌ Giveaway {msg_id} tidak dijumpai.")
+            bot.reply_to(message, f"❌ Giveaway {msg_id} not found.")
     except ValueError:
-        bot.reply_to(message, "❌ Message ID mesti nombor. Guna: /end [message_id]")
+        bot.reply_to(message, "❌ Message ID must be a number. Use: /end [message_id]")
     except Exception as e:
         print(f"❌ Error ending giveaway: {e}")
-        bot.reply_to(message, "❌ Ralat berlaku semasa menamatkan giveaway.")
+        bot.reply_to(message, "❌ An error occurred while ending the giveaway.")
 
 @bot.message_handler(func=lambda m: m.from_user.id in user_states)
 def handle_state(message):
@@ -583,7 +726,7 @@ def handle_state(message):
     if state['step'] == STATE_WAIT_TITLE:
         data['title'] = message.text
         state['step'] = STATE_WAIT_GIFT
-        bot.send_message(message.chat.id, "🎁 Masukkan hadiah:")
+        bot.send_message(message.chat.id, "🎁 Enter prize/gift:")
 
     elif state['step'] == STATE_WAIT_GIFT:
         data['gift'] = message.text
@@ -596,26 +739,26 @@ def handle_state(message):
             elif m == 0:
                 label = "♾️ Unlimited"
             else:
-                label = f"{m} minit"
+                label = f"{m} minutes"
             markup.add(InlineKeyboardButton(label, callback_data=f"duration:{m}"))
-        bot.send_message(message.chat.id, "⏳ Pilih tempoh giveaway:", reply_markup=markup)
+        bot.send_message(message.chat.id, "⏳ Choose giveaway duration:", reply_markup=markup)
 
     elif state['step'] == STATE_WAIT_PLACE:
         data['place'] = message.text
         state['step'] = STATE_WAIT_INFO
-        bot.send_message(message.chat.id, "📄 Masukkan info tambahan (atau '-' jika tiada):")
+        bot.send_message(message.chat.id, "📄 Enter additional info (or '-' if none):")
 
     elif state['step'] == STATE_WAIT_CUSTOM_DURATION:
         try:
             custom_minutes = int(message.text)
             if custom_minutes <= 0:
-                bot.send_message(message.chat.id, "❌ Masukkan nombor yang lebih besar dari 0:")
+                bot.send_message(message.chat.id, "❌ Enter a number greater than 0:")
                 return
             data['duration'] = custom_minutes
             state['step'] = STATE_WAIT_PLACE
-            bot.send_message(message.chat.id, f"✅ Tempoh ditetapkan: {custom_minutes} minit\n📍 Masukkan lokasi (atau '-' jika tiada):")
+            bot.send_message(message.chat.id, f"✅ Duration set: {custom_minutes} minutes\n📍 Enter location (or '-' if none):")
         except ValueError:
-            bot.send_message(message.chat.id, "❌ Masukkan nombor sahaja (dalam minit):")
+            bot.send_message(message.chat.id, "❌ Enter numbers only (in minutes):")
         return
 
     elif state['step'] == STATE_WAIT_INFO:
@@ -646,29 +789,88 @@ def handle_state(message):
         del user_states[uid]
         print(f"🗑️ Deleted setup messages for giveaway creation (preserved member messages)")
 
+@bot.callback_query_handler(func=lambda call: call.data.startswith("template:"))
+def handle_template(call):
+    uid = call.from_user.id
+    template_type = call.data.split(":")[1]
+    
+    print(f"🎨 User {call.from_user.first_name} selected template: {template_type}")
+    
+    templates = {
+        "gaming": {
+            "title": "Gaming Account Giveaway",
+            "gift": "Premium Gaming Account",
+            "duration": 60,
+            "place": "Online",
+            "info": "Premium account with exclusive features"
+        },
+        "cash": {
+            "title": "Cash Prize Giveaway", 
+            "gift": "$100 Cash Prize",
+            "duration": 120,
+            "place": "Global",
+            "info": "Cash prize via PayPal or bank transfer"
+        },
+        "product": {
+            "title": "Product Giveaway",
+            "gift": "Brand New Product",
+            "duration": 180,
+            "place": "Worldwide",
+            "info": "Free shipping included"
+        },
+        "software": {
+            "title": "Software License Giveaway",
+            "gift": "1-Year Software License",
+            "duration": 90,
+            "place": "Digital",
+            "info": "Full license with support"
+        },
+        "premium": {
+            "title": "Premium Access Giveaway",
+            "gift": "Premium Membership",
+            "duration": 240,
+            "place": "Online",
+            "info": "Premium features and benefits"
+        }
+    }
+    
+    if template_type in templates:
+        template_data = templates[template_type]
+        bot.answer_callback_query(call.id, f"✅ Template '{template_type}' selected!")
+        
+        # Delete the template selection message
+        try:
+            bot.delete_message(call.message.chat.id, call.message.message_id)
+        except:
+            pass
+        
+        send_giveaway(call.message.chat.id, template_data)
+    else:
+        bot.answer_callback_query(call.id, "❌ Template not found.")
+
 @bot.callback_query_handler(func=lambda call: call.data.startswith("duration:"))
 def handle_duration(call):
     uid = call.from_user.id
     print(f"⏰ User {call.from_user.first_name} selected duration")
 
     if uid not in user_states:
-        bot.answer_callback_query(call.id, "❌ Session expired. Mulakan semula dengan /create")
+        bot.answer_callback_query(call.id, "❌ Session expired. Start over with /create")
         return
 
     try:
         duration = int(call.data.split(":")[1])
         if duration == -1:  # Custom duration
             user_states[uid]['step'] = STATE_WAIT_CUSTOM_DURATION
-            bot.answer_callback_query(call.id, "✅ Custom time dipilih!")
-            bot.send_message(call.message.chat.id, "⏰ Masukkan tempoh dalam minit (contoh: 30, 60, 120):")
+            bot.answer_callback_query(call.id, "✅ Custom time selected!")
+            bot.send_message(call.message.chat.id, "⏰ Enter duration in minutes (example: 30, 60, 120):")
         else:
             user_states[uid]['data']['duration'] = duration
             user_states[uid]['step'] = STATE_WAIT_PLACE
-            bot.answer_callback_query(call.id, "✅ Tempoh dipilih!")
-            bot.send_message(call.message.chat.id, "📍 Masukkan lokasi (atau '-' jika tiada):")
+            bot.answer_callback_query(call.id, "✅ Duration selected!")
+            bot.send_message(call.message.chat.id, "📍 Enter location (or '-' if none):")
     except Exception as e:
         print(f"❌ Error handling duration: {e}")
-        bot.answer_callback_query(call.id, "❌ Ralat berlaku.")
+        bot.answer_callback_query(call.id, "❌ An error occurred.")
 
 @bot.callback_query_handler(func=lambda call: call.data.startswith("join:"))
 def handle_join(call):
@@ -679,7 +881,7 @@ def handle_join(call):
         msg_id = int(msg_id_str)
     except (ValueError, IndexError) as e:
         print(f"❌ Invalid callback data: {call.data}, error: {e}")
-        bot.answer_callback_query(call.id, "❌ Data tidak sah.", show_alert=True)
+        bot.answer_callback_query(call.id, "❌ Invalid data.", show_alert=True)
         return
 
     if msg_id not in participants:
@@ -688,7 +890,7 @@ def handle_join(call):
     user = call.from_user
     if user.id in participants[msg_id]:
         print(f"❌ User {user.first_name} already joined giveaway {msg_id}")
-        bot.answer_callback_query(call.id, "❗ Anda sudah sertai.", show_alert=True)
+        bot.answer_callback_query(call.id, "❗ You already joined.", show_alert=True)
         return
 
     participants[msg_id].add(user.id)
@@ -700,7 +902,7 @@ def handle_join(call):
     db.add_participant(msg_id, user.id, user_name)
 
     print(f"✅ User {user.first_name} successfully joined giveaway {msg_id}. Total participants: {len(participants[msg_id])}")
-    bot.answer_callback_query(call.id, "✅ Anda telah sertai giveaway!")
+    bot.answer_callback_query(call.id, "✅ You have joined the giveaway!")
 
     # Update the message to show current participant count
     try:
@@ -708,16 +910,16 @@ def handle_join(call):
         giveaway_data = active_giveaways.get(msg_id, {})
 
         if giveaway_data:
-            duration_text = "♾️ Unlimited" if giveaway_data.get('duration', 0) == 0 else f"{giveaway_data.get('duration', 0)} minit"
+            duration_text = "♾️ Unlimited" if giveaway_data.get('duration', 0) == 0 else f"{giveaway_data.get('duration', 0)} minutes"
             updated_text = (
-                f"🎉 *GIVEAWAY BERMULA!*\n\n"
-                f"📌 *Tajuk:* {giveaway_data.get('title', 'N/A')}\n"
-                f"🎁 *Hadiah:* {giveaway_data.get('gift', 'N/A')}\n"
-                f"⏳ *Tempoh:* {duration_text}\n"
-                f"📍 *Lokasi:* {giveaway_data.get('place', '-') or '-'}\n"
+                f"🎉 *GIVEAWAY STARTED!*\n\n"
+                f"📌 *Title:* {giveaway_data.get('title', 'N/A')}\n"
+                f"🎁 *Prize:* {giveaway_data.get('gift', 'N/A')}\n"
+                f"⏳ *Duration:* {duration_text}\n"
+                f"📍 *Location:* {giveaway_data.get('place', '-') or '-'}\n"
                 f"📝 *Info:* {giveaway_data.get('info', '-') or '-'}\n"
-                f"👥 *Penyertaan:* {current_count} orang\n\n"
-                f"🔽 Tekan butang di bawah untuk JOIN!"
+                f"👥 *Participants:* {current_count} people\n\n"
+                f"🔽 Press the button below to JOIN!"
             )
             bot.edit_message_text(updated_text, call.message.chat.id, msg_id, parse_mode="Markdown", reply_markup=call.message.reply_markup)
     except Exception as e:
@@ -726,24 +928,24 @@ def handle_join(call):
 def send_giveaway(chat_id, data):
     print(f"🚀 Creating giveaway: {data['title']}")
 
-    duration_text = "♾️ Unlimited" if data['duration'] == 0 else f"{data['duration']} minit"
+    duration_text = "♾️ Unlimited" if data['duration'] == 0 else f"{data['duration']} minutes"
 
     msg = bot.send_message(chat_id, (
-        f"🎉 *GIVEAWAY BERMULA!*\n\n"
-        f"📌 *Tajuk:* {data['title']}\n"
-        f"🎁 *Hadiah:* {data['gift']}\n"
-        f"⏳ *Tempoh:* {duration_text}\n"
-        f"📍 *Lokasi:* {data.get('place', '-') or '-'}\n"
+        f"🎉 *GIVEAWAY STARTED!*\n\n"
+        f"📌 *Title:* {data['title']}\n"
+        f"🎁 *Prize:* {data['gift']}\n"
+        f"⏳ *Duration:* {duration_text}\n"
+        f"📍 *Location:* {data.get('place', '-') or '-'}\n"
         f"📝 *Info:* {data.get('info', '-') or '-'}\n"
-        f"👥 *Penyertaan:* 0 orang\n\n"
-        f"🔽 Tekan butang di bawah untuk JOIN!"
+        f"👥 *Participants:* 0 people\n\n"
+        f"🔽 Press the button below to JOIN!"
     ), parse_mode="Markdown")
 
     msg_id = msg.message_id
 
     # Create the button with correct callback data
     markup = InlineKeyboardMarkup()
-    join_button = InlineKeyboardButton("✅ Saya Nak Join!", callback_data=f"join:{msg_id}")
+    join_button = InlineKeyboardButton("✅ I Want to Join!", callback_data=f"join:{msg_id}")
     markup.add(join_button)
 
     # Update the message with the button

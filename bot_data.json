@@ -1,6 +1,18 @@
 {
-  "active_giveaways": {},
-  "participants": {},
+  "active_giveaways": {
+    "634": {
+      "title": "Premium Access Giveaway",
+      "gift": "Premium Membership",
+      "duration": 240,
+      "place": "Online",
+      "info": "Premium features and benefits",
+      "end_time": 1752930808.8198595,
+      "chat_id": 7518612958
+    }
+  },
+  "participants": {
+    "634": []
+  },
   "completed_giveaways": [
     {
       "title": "100T",
@@ -145,7 +157,7 @@
       "total_wins": 0
     }
   },
-  "last_updated": "2025-07-18T04:01:17.941552",
+  "last_updated": "2025-07-19T09:13:28.819873",
   "winners_history": [
     {
       "user_id": 7518612958,
@@ -170,11 +182,14 @@
   ],
   "user_keys": {
     "7518612958": {
-      "key": "GJjdgNZ4DztVUGfD",
+      "key": "2IAfuX96PKVTv6hH",
       "user_name": "€Hack Hub√",
-      "generated_at": "2025-07-18T03:55:35.341751",
-      "expires_at": "2025-07-19T03:55:35.341729",
+      "generated_at": "2025-07-19T09:13:12.106922",
+      "expires_at": "2025-07-20T09:13:12.106916",
       "is_active": true
     }
+  },
+  "system_stats": {
+    "total_giveaways_created": 1
   }
 }
